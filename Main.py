@@ -20,15 +20,15 @@ from flask_login import LoginManager, login_required, logout_user, login_user, U
 app = Flask(__name__)
 app.debug = True
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:12345678@localhost/matlefkofsky364Final1" ##????
-# app.config["SQLALCHEMY_DATABASE_URI"] = "DATABASE_URLS" ##????
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:12345678@localhost/matlefkofsky364Final1"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "DATABASE_URLS"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587 #default
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'matlefkofsky364@gmail.com'#should work now it blocked the attempt
+app.config['MAIL_USERNAME'] = 'matlefkofsky364@gmail.com'
 app.config['MAIL_PASSWORD'] = "matlefkofsky"
 app.config['MAIL_SUBJECT_PREFIX'] = '[Movie Results]'
 app.config['MAIL_SENDER'] = 'matlefkofsky364@gmail.com' 
@@ -39,10 +39,10 @@ app.config['SECRET_KEY'] = 'hardtoguessstring'
 # Set up Flask debug stuff
 manager = Manager(app)
 db = SQLAlchemy(app) # For database use
-migrate = Migrate(app, db) # For database use/updating
-manager.add_command('db', MigrateCommand) # Add migrate
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
 mail = Mail(app)
-google_key = "AIzaSyCRQKx-rs1IRg-mlG11KrY412tnyUvs8w8" #?????
+google_key = "AIzaSyCRQKx-rs1IRg-mlG11KrY412tnyUvs8w8"
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -53,12 +53,12 @@ def send_async_email(app, msg):
 	with app.app_context():
 		mail.send(msg)
 
-def send_email(to, subject, template, **kwargs): # kwargs = 'keyword arguments', this syntax means to unpack any keyword arguments into the function in the invocation...
+def send_email(to, subject, template, **kwargs):
 	msg = Message(app.config['MAIL_SUBJECT_PREFIX'] + ' ' + subject,
 				  sender=app.config['MAIL_SENDER'], recipients=[to])
 	msg.body = render_template(template + '.txt', **kwargs)
 	msg.html = render_template(template + '.html', **kwargs)
-	thr = Thread(target=send_async_email, args=[app, msg]) # using the async email to make sure the email sending doesn't take up all the "app energy" -- the main thread -- at once
+	thr = Thread(target=send_async_email, args=[app, msg])
 	thr.start()
 	return thr
 
@@ -192,18 +192,17 @@ def index():
 		return render_template("movieresults.html", movieData= data, Actors = actorsList)
 	return render_template("index.html", form= form)
 
-#that should do it...just the email now
-@app.route('/actor/<Actor>',methods=["GET","POST"]) #it should be the same value as the Actor in this path...which does have data
+@app.route('/actor/<Actor>',methods=["GET","POST"])
 @login_required
-def actor_search(Actor): #hoe are we getitng th evalue of the actor variable?
+def actor_search(Actor):
 	act=Actor.replace(" ","+")
 	testing =requests.get("http://www.theimdbapi.org/api/find/person?name="+act)
 	data=json.loads(testing.text)
 	text_actor_list=[]
 	for i in range(0, 50):
 		# print(data[0]['filmography']['actor'][i]['title'])
-		text_actor_list.append(data[0]['filmography']['actor'][i]['title'])#here we are appending the list of movies of the actor and sending it to the template
-	return render_template('actorresults.html',text_actor=text_actor_list)#here it is sending to the template
+		text_actor_list.append(data[0]['filmography']['actor'][i]['title'])
+	return render_template('actorresults.html',text_actor=text_actor_list)
 
 
 class Movie(db.Model):
