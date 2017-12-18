@@ -8,9 +8,10 @@ One can view the worst 100 or top 250 movies without logging in, but in order to
 
 Steps to run:
 
-Please use python 3.5 or higher
-Please pip install the imports in Main.py
-matlefkofsky364Final1 is the name of the database you must create
-If necessary: create a username postgres and a password of 12345678
-then type python3 Main.py runserver
+1)Please use python 3.5 or higher
+2)Please pip install the imports in Main.py
+3)matlefkofsky364Final1 is the name of the database you must create
+4)If necessary: create a username postgres and a password of 12345678
+5) then type python3 Main.py runserver
+
 #I included the virtual environment files I used because some of my python files were stored incorrectly. #One should not have to use this if their python files are set up correctly #Some of my friends gave it a try and it worked fine.
