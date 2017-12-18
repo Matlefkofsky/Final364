@@ -1,0 +1,6 @@
+<a href="{{ url_for('logout') }}">Logout</a>
+<h1>Top 50 movies of the actor</h1>
+
+{% for actor in text_actor %}
+<p>{{actor}}</p>
+{% endfor %}

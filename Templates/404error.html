@@ -1,0 +1,9 @@
+@app.route('/actor/<Actor>',methods=["GET","POST"]) #it should be the same value as the Actor in this path...which does have data
+def actor_search(Actor): #hoe are we getitng th evalue of the actor variable?
+	act=Actor.replace(" ","+")
+	testing =requests.get("http://www.theimdbapi.org/api/find/person?name="+act)
+	data=json.loads(testing.text)
+	data1=data["actor"]
+	movie_list.append(data["actor"]["title"])
+	#print (movie_list)
+	return render_template('actorresults.html',text_actor=str(data1))
